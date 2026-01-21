@@ -197,7 +197,10 @@ class HISEForCausalLM(HISEPreTrainedModel):
 
         # FSI Handling for Safety Valve
         fsi_metric = None
-        if output_fsi and outputs.hidden_states is not None:
+        
+        # [CRITICAL FIX] Added 'len(outputs.hidden_states) > 0' check
+        # This prevents crash when running in MoE mode where FSI scores might be empty
+        if output_fsi and outputs.hidden_states is not None and len(outputs.hidden_states) > 0:
              # Stack layers: [Layers, Batch, Seq]
              fsi_stack = torch.stack(outputs.hidden_states)
              # Average across layers to get a global System 2 risk score
