@@ -18,6 +18,7 @@ pip install transformers triton einops wandb
 步驟 3：安裝工具庫
 pip install pandas matplotlib seaborn streamlit scipy
 
+___
 
 2. 單元測試：物理內核 (Unit Test: Kernels)
 建立一個名為 test_kernel.py 的檔案，用於驗證 Triton Fused Kernel 是否能與 GPU 正常通訊。
