@@ -1,9 +1,7 @@
-﻿from transformers import PretrainedConfig
-
+from transformers import PretrainedConfig
 
 class HISEConfig(PretrainedConfig):
     model_type = "hise"
-
 
     def __init__(
         self,
@@ -14,19 +12,25 @@ class HISEConfig(PretrainedConfig):
         max_position_embeddings=8192,
         
         # --- Physics Parameters ---
-        d_inertial=64,          # Rank of the inertial manifold (r)
-        epsilon=0.1,            # Base symplectic step size (System 1)
-        tau=1.0,                # Base temperature
-        lambda_conf=0.01,       # Harmonic confinement strength
+        d_inertial=64,          
+        epsilon=0.1,            
+        tau=1.0,                
+        lambda_conf=0.01,       
         
-        # --- Cognitive Gearbox (AGI Parameters) ---
+        # --- Cognitive Gearbox (System 1/2) ---
         use_cognitive_gearbox=True,
-        min_epsilon_scale=0.1,  # Factor to reduce step size in System 2
-        system2_threshold=1.0,  # Mass threshold to trigger System 2
+        min_epsilon_scale=0.1,  
+        system2_threshold=1.0,  
         
-        # --- S-Tier Engineering ---
+        # --- S-Tier Engineering (MOE & Memory) ---
         use_paged_momentum=False,
         fsi_threshold=1.0,
+        
+        # [NEW] MoE Configuration
+        use_moe=False,          # Master switch for MoPE
+        num_experts=4,          # Number of physics experts
+        num_experts_per_tok=2,  # Top-k routing
+        moe_loss_weight=0.01,   # Aux loss weight
         
         initializer_range=0.02,
         **kwargs,
@@ -48,6 +52,13 @@ class HISEConfig(PretrainedConfig):
         
         self.use_paged_momentum = use_paged_momentum
         self.fsi_threshold = fsi_threshold
+        
+        # [NEW] Initialize MoE params
+        self.use_moe = use_moe
+        self.num_experts = num_experts
+        self.num_experts_per_tok = num_experts_per_tok
+        self.moe_loss_weight = moe_loss_weight
+        
         self.initializer_range = initializer_range
         
         super().__init__(**kwargs)
