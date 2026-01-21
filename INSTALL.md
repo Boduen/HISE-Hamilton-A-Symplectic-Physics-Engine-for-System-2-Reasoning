@@ -46,6 +46,7 @@ python 13.train_pretrain_distributed.py
  * 物理權重：觀察 loss_physics 是否非零（代表 FSI 機制生效）。
  * 運行速度：確認 Iter/s 速度正常，無明顯卡頓。
 5. 常見錯誤排除 (Troubleshooting)
+
 ImportError: cannot import name 'triton'
 原因：環境未安裝 Triton 或處於非 Linux 環境。
 解決：請確認在 Linux/WSL2 環境下，執行 pip install triton。
