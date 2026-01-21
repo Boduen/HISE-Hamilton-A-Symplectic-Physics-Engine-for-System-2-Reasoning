@@ -45,9 +45,18 @@ python 13.train_pretrain_distributed.py
  * 物理權重：觀察 loss_physics 是否非零（代表 FSI 機制生效）。
  * 運行速度：確認 Iter/s 速度正常，無明顯卡頓。
 5. 常見錯誤排除 (Troubleshooting)
-| 錯誤訊息 | 可能原因 | 解決方法 |
-|---|---|---|
-| ImportError: cannot import name 'triton' | 環境未安裝 Triton | 確認在 Linux/WSL2 環境下，執行 pip install triton |
-| RuntimeError: stack expects a non-empty Tensor... | MoE 模式 FSI 為空 | 檢查 6.hise_modeling_modeling_hise.py 是否已加入空值檢查修復 |
-| Loss is NaN | 數值梯度爆炸 | 確認 2.hise_thermodynamics_mass_dynamics.py 已使用 Softplus |
-| CUDA error: device-side assert triggered | 詞彙表索引越界 | 檢查 config.vocab_size 是否匹配輸入數據 |
+ImportError: cannot import name 'triton'
+原因：環境未安裝 Triton 或處於非 Linux 環境。
+解決：請確認在 Linux/WSL2 環境下，執行 pip install triton。
+
+RuntimeError: stack expects a non-empty Tensor list
+原因：MoE 模式下 FSI 輸出的列表為空。
+解決：檢查 6.hise_modeling_modeling_hise.py 是否已加入空值檢查修復。
+
+Loss is NaN
+原因：數值梯度爆炸。
+解決：確認 2.hise_thermodynamics_mass_dynamics.py 已使用 Softplus 進行數值穩定。
+
+CUDA error: device-side assert triggered
+原因：詞彙表索引越界（Index out of bounds）。
+解決：檢查 config.vocab_size 是否與輸入數據的詞彙量完全匹配。
