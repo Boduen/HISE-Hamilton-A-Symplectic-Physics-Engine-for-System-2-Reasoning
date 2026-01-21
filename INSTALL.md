@@ -2,14 +2,12 @@ HISE-Pro 啟動與測試標準作業程序 (SOP)
 
 本指南涵蓋 HISE-Pro 物理感知 AI 模型的環境建置、單元測試、整合測試與訓練啟動步驟。
 
-
 1. 安裝環境 (Installation)
 
 **前置要求：**
 * 作業系統：**Linux** 或 **Windows (WSL2)**
 * Python 版本：`>= 3.9`
 * CUDA 版本：`>= 12.1`
-
 步驟 1：安裝 PyTorch
 ```bash
 pip install torch torchvision torchaudio --index-url [https://download.pytorch.org/whl/cu121](https://download.pytorch.org/whl/cu121)
