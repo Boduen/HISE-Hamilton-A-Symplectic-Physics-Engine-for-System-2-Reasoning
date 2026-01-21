@@ -1,80 +1,60 @@
-﻿"""
-HISE-Pro: Holographic Inertial Syntax Engine
-Project Directory Structure & Manifest
 """
-
+HISE-Pro: Holographic Inertial Syntax Engine
+Project Directory Structure & Manifest (v2.0 - Triton/MoE Optimized)
+"""
 
 PROJECT_STRUCTURE = """
 HISE-Pro/
-├── csrc/                               # [C++/CUDA Core] Low-level Performance Kernels
-│   ├── fused_soft_tcm.cu               # Fused Operator: Force Field + Symplectic Integration
-│   ├── paged_momentum.cpp              # Memory Management: PagedMomentum (vLLM-style)
-│   ├── quantization/                   # Physics-Aware Quantization (FP8/Int8)
-│   └── CMakeLists.txt                  # Build Configuration
+├── assets/                             # [Documentation] Images & Diagrams
+│   ├── architecture_diagram.png
+│   └── phase_space_demo.gif
 │
-├── hise/                               # [Python Library] Core Physics Engine
+├── hise/                               # [Core Library] The Physics Engine
 │   ├── __init__.py
-│   ├── config.py                       # Configuration: System 1/2 Thresholds & PSD Params
+│   ├── config.py                       # [Ref: 1.hise_config.py] System 1/2 & MoE Params
 │   │
-│   ├── kernels/                        # [Triton Kernels] High-Performance Physics Ops
+│   ├── kernels/                        # [Triton Core] The Engine Room
 │   │   ├── __init__.py
-│   │   ├── triton_attention.py         # Hamiltonian Attention (Potential Gradient)
-│   │   └── triton_physics.py           # Variable Mass Symplectic Integrator
+│   │   └── triton_physics.py           # [Ref: 3.hise_kernels...] Fused Recurrent Scan & Autograd
 │   │
-│   ├── modeling/                       # [Architecture] Neural Network Definition
+│   ├── modeling/                       # [Neural Architecture]
 │   │   ├── __init__.py
-│   │   ├── base_layers.py              # SoftTCMLayer with Cognitive Gearbox Integration
-│   │   ├── moe_router.py               # MoPE (Mixture of Physics Experts) Router
-│   │   └── modeling_hise.py            # Main Model Class & FSI Signal Propagation
+│   │   ├── base_layers.py              # [Ref: 4.hise_modeling...] SoftTCMLayer (Training Loop Fixed)
+│   │   ├── moe_router.py               # [Ref: 11.hise_modeling...] PhysicsRouter & MoPEBlock
+│   │   └── modeling_hise.py            # [Ref: 6.hise_modeling...] Main Model with Shared Gearbox
 │   │
-│   ├── thermodynamics/                 # [Dynamics] Mass & Entropy Control
+│   ├── thermodynamics/                 # [Dynamics] Mass & Entropy
 │   │   ├── __init__.py
-│   │   ├── mass_dynamics.py            # Cognitive Gearbox (PSD: Information -> Mass)
-│   │   ├── annealing.py                # Scheduler: Hessian Annealing & Inverse-Mass Scaling
-│   │   └── fsi_monitor.py              # Fisher Semantic Information Calculator
+│   │   ├── mass_dynamics.py            # [Ref: 2.hise_thermo...] CognitiveGearbox (Softplus Fixed)
+│   │   └── annealing.py                # [Ref: 8.hise_thermo...] Thermodynamic Scheduler
 │   │
-│   ├── ops/                            # [Operator Bindings] Hardware Abstraction
-│   │   ├── __init__.py
-│   │   └── paged_ops.py                # Python Interface for PagedMomentum
-│   │
-│   └── utils/                          # [Utilities] Helper Functions
-│       ├── data_physics.py             # Data Preprocessing
-│       └── distributed.py              # FSDP/DDP Distributed Training Helpers
+│   └── ops/                            # [Memory] Paged Attention/Momentum
+│       ├── __init__.py
+│       └── paged_ops.py                # [Ref: 5.hise_ops...] PagedMomentum Manager
 │
-├── train/                              # [Training] Evolution & Optimization
-│   ├── pretrain_distributed.py         # Main Evolutionary Loop (Symplectic-Fisher Loss)
-│   ├── curriculum_config.json          # Curriculum: Massless to Massive Evolution
-│   ├── finetune_sft.py                 # Supervised Fine-Tuning Script
-│   └── ds_config_zero3.json            # DeepSpeed Zero-3 Configuration
+├── train/                              # [Training] Evolution Loops
+│   ├── pretrain_distributed.py         # [Ref: 13.train...] Main Loop with Symplectic Loss
+│   └── ds_config.json                  # DeepSpeed Config
 │
-├── serve/                              # [Inference] Serving & Safety Systems
-│   ├── engine.py                       # Asynchronous Inference Engine
-│   ├── api_server.py                   # OpenAI-Compatible API Server
-│   └── safety_rag.py                   # Safety Valve: Semantic Nyquist Limit Monitor
+├── serve/                              # [Inference & Safety]
+│   ├── safety_rag.py                   # [Ref: 7.serve...] FSI Monitor & Entropy Sink
+│   └── inference_engine.py             # Inference Server (Integrates PagedMomentum)
 │
-├── visualization/                      # [Telemetry] Glass Box UI
-│   ├── app.py                          # Streamlit Real-Time Physics Dashboard
-│   └── plotters.py                     # Phase Space Trajectory Visualization Tools
+├── visualization/                      # [Telemetry]
+│   └── app.py                          # [Ref: 10.vis...] Streamlit Dashboard
 │
-├── tests/                              # [Verification] Unit & Integration Tests
-│   ├── integration_test.py             # System 1/2 End-to-End Integration Check
-│   ├── test_physics_consistency.py     # Energy/Momentum Conservation Tests
-│   └── test_triton_kernels.py          # Numerical Precision Tests for Kernels
+├── tests/                              # [Verification]
+│   ├── test_kernel.py                  # [NEW] Unit Test for Triton Fused Scan
+│   └── integration_test.py             # [Ref: 9.test_run.py] Forward Pass Check
 │
-├── benchmarks/                         # [Profiling] Performance Benchmarks
-│   ├── bench_throughput.py             # Token Generation Throughput
-│   └── bench_memory.py                 # PagedMomentum Memory Pressure Test
-│
-├── Dockerfile                          # Production Container Environment
-├── requirements.txt                    # Python Dependencies
-├── setup.py                            # Installation Script (CUDA/Triton Compilation)
-└── README.md                           # Project Documentation
+├── INSTALL.md                          # [NEW] Installation SOP
+├── README.md                           # Project Documentation
+├── requirements.txt                    # Dependencies (triton, transformers, etc.)
+└── setup.py                            # Package Installer
 """
-
 
 def print_structure():
     print(PROJECT_STRUCTURE)
-
 
 if __name__ == "__main__":
     print_structure()
